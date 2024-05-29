@@ -21,7 +21,7 @@ class ProfileListSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileListSerializer(read_only=True)
-    password = serializers.CharField(style={"input_type": "password"})
+    password = serializers.CharField(write_only=True, style={"input_type": "password"})
 
     class Meta:
         model = get_user_model()
