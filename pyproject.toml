@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "blog-articles-api-test-task"
+version = "0.1.0"
+description = ""
+authors = ["Viktor Beniukh <superbigbenjamin@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^5.0.6"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+flake8 = "^7.0.0"
+flake8-variables-names = "^0.0.6"
+flake8-quotes = "^3.4.0"
+pep8-naming = "^0.14.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
