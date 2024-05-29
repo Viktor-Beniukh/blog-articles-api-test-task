@@ -21,6 +21,7 @@ class ProfileListSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileListSerializer(read_only=True)
+    password = serializers.CharField(style={"input_type": "password"})
 
     class Meta:
         model = get_user_model()
@@ -81,3 +82,15 @@ class AuthTokenSerializer(serializers.Serializer):
         attrs["user"] = user
 
         return attrs
+
+
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    new_password = serializers.CharField(
+        write_only=True, style={"input_type": "password"}, min_length=5
+    )
+    confirmed_password = serializers.CharField(
+        write_only=True, style={"input_type": "password"}, min_length=5
+    )
