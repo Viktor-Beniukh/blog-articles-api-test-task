@@ -1,3 +1,6 @@
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema, OpenApiParameter
+
 from rest_framework import viewsets, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import action
@@ -43,6 +46,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
         return super().get_serializer_class()
 
+    @extend_schema(description="Upload picture to specific article", methods=["POST"])
     @action(
         methods=["POST"],
         detail=True,
@@ -60,3 +64,59 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                "title",
+                type=OpenApiTypes.STR,
+                description="Filter by title (ex. ?title=python)",
+            ),
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        """Get list of articles"""
+        return super().list(request, *args, **kwargs)
+
+    @extend_schema(
+        description="Retrieve a specific article",
+        responses={200: ArticleDetailSerializer},
+    )
+    def retrieve(self, request, *args, **kwargs):
+        """Retrieve a specific article"""
+        return super().retrieve(request, *args, **kwargs)
+
+    @extend_schema(
+        description="Create a new article",
+        request=ArticleSerializer,
+        responses={201: ArticleSerializer},
+    )
+    def create(self, request, *args, **kwargs):
+        """Create a new article"""
+        return super().create(request, *args, **kwargs)
+
+    @extend_schema(
+        description="Update an existing article",
+        request=ArticleSerializer,
+        responses={200: ArticleSerializer},
+    )
+    def update(self, request, *args, **kwargs):
+        """Update an existing article"""
+        return super().update(request, *args, **kwargs)
+
+    @extend_schema(
+        description="Partially update an existing article",
+        request=ArticleSerializer,
+        responses={200: ArticleSerializer},
+    )
+    def partial_update(self, request, *args, **kwargs):
+        """Partially update an existing article"""
+        return super().partial_update(request, *args, **kwargs)
+
+    @extend_schema(
+        description="Delete an existing article",
+        responses={204: None},
+    )
+    def destroy(self, request, *args, **kwargs):
+        """Delete an existing article"""
+        return super().destroy(request, *args, **kwargs)
