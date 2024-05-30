@@ -62,8 +62,8 @@ class UpdateProfileView(generics.UpdateAPIView):
 
 
 class LogoutView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request):
         request.user.auth_token.delete()
