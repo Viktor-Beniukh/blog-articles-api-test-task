@@ -1,5 +1,5 @@
 from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 
 from rest_framework import viewsets, status
 from rest_framework.authentication import TokenAuthentication
@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from articles.models import Article
+from articles.pagination import ApiPagination
 from articles.permissions import IsAuthorOrReadOnly
 from articles.serializers import (
     ArticleSerializer,
@@ -22,6 +23,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
     serializer_class = ArticleSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated, IsAuthorOrReadOnly)
+    pagination_class = ApiPagination
 
     def get_queryset(self):
         """Retrieve the article with filter"""
