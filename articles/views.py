@@ -1,5 +1,5 @@
 from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import extend_schema, OpenApiParameter
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 
 from rest_framework import viewsets, status
 from rest_framework.authentication import TokenAuthentication
@@ -46,7 +46,25 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
         return super().get_serializer_class()
 
-    @extend_schema(description="Upload picture to specific article", methods=["POST"])
+    @extend_schema(
+        methods=["POST"],
+        description="Upload picture to specific article",
+        request={
+            "multipart/form-data": {
+                "type": "object",
+                "properties": {
+                    "picture": {
+                        "type": "string",
+                        "format": "binary",
+                    },
+                },
+                "required": ["picture"],
+            }
+        },
+        responses={
+            200: ArticlePictureSerializer,
+        },
+    )
     @action(
         methods=["POST"],
         detail=True,

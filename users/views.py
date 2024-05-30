@@ -3,6 +3,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.db import IntegrityError
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
+
 from drf_spectacular.utils import extend_schema, extend_schema_view
 
 from rest_framework import generics, status
@@ -76,9 +77,22 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
 @extend_schema_view(
     post=extend_schema(
         description="Create a new profile for the current user",
-        request=ProfileSerializer,
-        responses={201: ProfileSerializer},
-    ),
+        request={
+            "multipart/form-data": {
+                "type": "object",
+                "properties": {
+                    "image": {
+                        "type": "string",
+                        "format": "binary",
+                    },
+                },
+                "required": ["image"],
+            }
+        },
+        responses={
+            201: ProfileSerializer,
+        },
+    )
 )
 class CreateProfileView(generics.CreateAPIView):
     serializer_class = ProfileSerializer
@@ -95,9 +109,22 @@ class CreateProfileView(generics.CreateAPIView):
 @extend_schema_view(
     put=extend_schema(
         description="Update the existing profile for the current user",
-        request=ProfileSerializer,
-        responses={200: ProfileSerializer},
-    ),
+        request={
+            "multipart/form-data": {
+                "type": "object",
+                "properties": {
+                    "image": {
+                        "type": "string",
+                        "format": "binary",
+                    },
+                },
+                "required": ["image"],
+            }
+        },
+        responses={
+            200: ProfileSerializer,
+        },
+    )
 )
 class UpdateProfileView(generics.UpdateAPIView):
     serializer_class = ProfileSerializer
@@ -130,7 +157,9 @@ class UpdateProfileView(generics.UpdateAPIView):
                             "authentication_error": {
                                 "detail": "Authentication credentials were not provided."
                             },
-                            "invalid_authentication_token": {"detail": "Invalid token."},
+                            "invalid_authentication_token": {
+                                "detail": "Invalid token."
+                            },
                         }
                     }
                 },
