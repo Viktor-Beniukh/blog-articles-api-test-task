@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 
@@ -75,14 +77,22 @@ class Profile(models.Model):
         *args,
         **kwargs,
     ):
-        if self.image:
-            super().save(*args, **kwargs)
+        try:
+            old_instance = Profile.objects.get(pk=self.pk)
+            old_image = old_instance.image
+        except Profile.DoesNotExist:
+            old_image = None
 
+        super().save(*args, **kwargs)
+
+        if old_image and self.image != old_image:
+            if os.path.isfile(old_image.path):
+                os.remove(old_image.path)
+
+        if self.image:
             img = Image.open(self.image.path)
 
             if img.height > 300 or img.width > 300:
                 output_size = (300, 300)
                 img.thumbnail(output_size)
                 img.save(self.image.path)
-        else:
-            super().save(*args, **kwargs)
