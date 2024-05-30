@@ -44,6 +44,7 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
 
 class CreateProfileView(generics.CreateAPIView):
     serializer_class = ProfileSerializer
+    authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
@@ -55,6 +56,7 @@ class CreateProfileView(generics.CreateAPIView):
 
 class UpdateProfileView(generics.UpdateAPIView):
     serializer_class = ProfileSerializer
+    authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
