@@ -22,7 +22,9 @@ def send_password_reset_email(user, request):
     token = default_token_generator.make_token(user)
     uid = urlsafe_base64_encode(force_bytes(user.pk))
 
-    reset_password_url = reverse("users:password-reset-confirm", kwargs={"uidb64": uid, "token": token})
+    reset_password_url = reverse(
+        "users:password-reset-confirm", kwargs={"uidb64": uid, "token": token}
+    )
     reset_password_url = f"http://{request.get_host()}{reset_password_url}"
 
     subject = "Password Reset Request"
