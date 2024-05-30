@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
+import sys
 
 from pathlib import Path
 from dotenv import load_dotenv
@@ -29,12 +30,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
-
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -48,16 +44,17 @@ INSTALLED_APPS = [
 
     "rest_framework",
     "rest_framework.authtoken",
-    "debug_toolbar",
     "drf_spectacular",
 
     "users",
     "articles",
 ]
 
+if DEBUG and "test" not in sys.argv:
+    INSTALLED_APPS.append("debug_toolbar")
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -65,6 +62,10 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+if "debug_toolbar" in INSTALLED_APPS:
+    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+    INTERNAL_IPS = ["127.0.0.1"]
 
 ROOT_URLCONF = "blog_service.urls"
 
