@@ -188,3 +188,50 @@ SPECTACULAR_SETTINGS = {
         "defaultModelExpandDepth": 2,
     },
 }
+
+
+LOGGING_DIR = os.path.join(BASE_DIR, "logs")
+
+LOG_LEVEL = "INFO"
+
+if os.getenv("LOG_LEVEL") is not None:
+    LOG_LEVEL = os.getenv("LOG_LEVEL")
+
+if not os.path.exists(LOGGING_DIR):
+    os.makedirs(LOGGING_DIR)
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": LOG_LEVEL,
+            "class": "logging.FileHandler",
+            "filename": os.path.join(LOGGING_DIR, "app.log"),
+            "formatter": "verbose",
+        },
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "stream": sys.stdout,
+            "formatter": "verbose",
+        },
+    },
+    "formatters": {
+        "verbose": {
+            "format": "%(levelname)s - %(asctime)s - %(name)s - %(message)s",
+            "datefmt": "%d-%m-%Y %H:%M:%S",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["file", "console"],
+            "level": LOG_LEVEL,
+            "propagate": True,
+        },
+    },
+    "root": {
+        "handlers": ["file", "console"],
+        "level": LOG_LEVEL,
+    },
+}
