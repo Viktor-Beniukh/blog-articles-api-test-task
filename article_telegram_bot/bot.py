@@ -5,7 +5,7 @@ import sys
 import django
 
 from aiogram import Bot, Dispatcher, types
-from aiogram.enums import ParseMode
+from aiogram.client.default import DefaultBotProperties
 from django.conf import settings
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -27,7 +27,7 @@ async def main():
 
     logging.basicConfig(level=logging.INFO)
 
-    bot = Bot(token=BOT_TOKEN, parse_mode=ParseMode.HTML)
+    bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode="HTML"))
 
     await send_message_to_chat(chat_id=int(CHAT_ID), message="Bot is starting...", bot=bot)
 
