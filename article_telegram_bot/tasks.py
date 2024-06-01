@@ -12,5 +12,5 @@ def send_new_article_notification_task(
     article_id: int, article_title: str, bot_token: str, chat_id: int
 ) -> None:
     bot = TeleBot(token=bot_token)
-    message = f"New article published: \n\n#{article_id}. {article_title}"
+    message = f"New article published: \n\n<b>#{article_id}. {article_title}</b>"
     bot.send_message(chat_id=chat_id, text=message)
