@@ -18,7 +18,6 @@ def send_new_article_notification(sender, instance, created, **kwargs):
         article_title = instance.title
         bot_token = settings.BOT_TOKEN
         chat_id = settings.TELEGRAM_CHAT_ID
-        logger.info(f"Loaded bot token: {bot_token}, chat ID: {chat_id}")
 
         logger.info(f"Article created: {article_title}. Sending notification.")
         send_new_article_notification_task.delay(
