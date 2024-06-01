@@ -1,20 +1,24 @@
 import os
 import asyncio
 import logging
+import sys
+import django
 
 from aiogram import Bot, Dispatcher, types
 from aiogram.enums import ParseMode
+from django.conf import settings
 
-from dotenv import load_dotenv
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "blog_service.settings")
+django.setup()
 
-from telegram_utils import send_message_to_chat
-from start_commands_list.start_cmd_list import start_commands
-from routers import router as main_router
+from article_telegram_bot.telegram_utils import send_message_to_chat
+from article_telegram_bot.start_commands_list.start_cmd_list import start_commands
+from article_telegram_bot.routers import router as main_router
 
-load_dotenv()
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+BOT_TOKEN = settings.BOT_TOKEN
+CHAT_ID = settings.TELEGRAM_CHAT_ID
 
 
 async def main():
