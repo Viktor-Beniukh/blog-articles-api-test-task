@@ -16,6 +16,12 @@ django-debug-toolbar = "^4.4.2"
 drf-spectacular = "^0.27.2"
 psycopg2-binary = "^2.9.9"
 gunicorn = "^22.0.0"
+aiogram = "^3.6.0"
+celery = "^5.4.0"
+redis = "^5.0.4"
+django-celery-beat = "^2.6.0"
+python-telegram-bot = "^21.2"
+telebot = "^0.0.5"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.4.2"
