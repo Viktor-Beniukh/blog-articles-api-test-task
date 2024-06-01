@@ -11,7 +11,7 @@ router = Router(name=__name__)
 def get_latest_article():
     latest_article = Article.objects.select_related("user").order_by("-id").first()
     if latest_article:
-        return f"The latest published article: \n#{latest_article.id}. {latest_article.title}"
+        return f"The latest published article: \n<b>#{latest_article.id}</b>. <b>{latest_article.title}</b>"
     else:
         return "There are no articles published yet."
 

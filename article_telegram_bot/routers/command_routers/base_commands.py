@@ -7,7 +7,7 @@ router = Router(name=__name__)
 
 @router.message(CommandStart())
 async def handle_start(message: types.Message):
-    text = f"Hello, {message.from_user.full_name}! Welcome to The Blog Articles."
+    text = f"Hello, <b>{message.from_user.full_name}!</b> Welcome to <b><i>The Blog Articles.</i></b>"
     await message.answer(text=text)
 
 
