@@ -9,6 +9,14 @@ from articles.utils import articles_picture_file_path
 
 
 class Article(models.Model):
+    MANUAL = "Manual"
+    SCRAPED = "Scraped"
+
+    SOURCE_CHOICES = [
+        (MANUAL, "Manual"),
+        (SCRAPED, "Scraped"),
+    ]
+
     title = models.CharField(max_length=255, blank=True)
     content = models.TextField(blank=True)
     picture = models.ImageField(upload_to=articles_picture_file_path, null=True)
@@ -18,6 +26,7 @@ class Article(models.Model):
     )
     scraped_title = models.CharField(max_length=255, blank=True, null=True)
     scraped_url = models.URLField(max_length=2000, blank=True, null=True)
+    source = models.CharField(max_length=20, choices=SOURCE_CHOICES, default=MANUAL)
 
     class Meta:
         ordering = ["-published_at", "-id"]
