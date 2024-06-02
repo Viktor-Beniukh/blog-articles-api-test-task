@@ -9,11 +9,25 @@ router = Router(name=__name__)
 
 @sync_to_async
 def get_latest_article():
-    latest_article = Article.objects.select_related("user").order_by("-id").first()
-    if latest_article:
-        return f"The latest published article: \n<b>#{latest_article.id}</b>. <b>{latest_article.title}</b>"
+    manual_article = Article.objects.filter(source="Manual").select_related("user").order_by("-id").first()
+
+    scraped_article = Article.objects.filter(source="Scraped").order_by("-id").first()
+
+    if manual_article and scraped_article:
+        if manual_article.id > scraped_article.id:
+            latest_article = manual_article
+        else:
+            latest_article = scraped_article
+    elif manual_article:
+        latest_article = manual_article
+    elif scraped_article:
+        latest_article = scraped_article
     else:
         return "There are no articles published yet."
+
+    return (f"The latest published article: \n<b>#{latest_article.id}</b>. "
+            f"<b>{latest_article.scraped_title if latest_article.source == 'Scraped' else latest_article.title}</b>"
+            )
 
 
 @router.message(Command("latest"))
