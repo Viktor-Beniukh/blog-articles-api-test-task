@@ -32,3 +32,9 @@ class ArticlePictureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = ("id", "picture")
+
+
+class ArticleScrapedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = ("id", "scraped_title", "scraped_url")

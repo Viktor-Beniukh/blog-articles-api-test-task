@@ -1,7 +1,7 @@
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, generics, mixins
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -15,6 +15,7 @@ from articles.serializers import (
     ArticleListSerializer,
     ArticlePictureSerializer,
     ArticleDetailSerializer,
+    ArticleScrapedSerializer,
 )
 
 
@@ -140,3 +141,47 @@ class ArticleViewSet(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         """Delete an existing article"""
         return super().destroy(request, *args, **kwargs)
+
+
+class ArticleScrapedViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet
+):
+    queryset = Article.objects.filter(source="Scraped")
+    serializer_class = ArticleScrapedSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    pagination_class = ApiPagination
+
+    def get_queryset(self):
+        """Retrieve the article with filter"""
+        scraped_title = self.request.query_params.get("scraped_title")
+
+        queryset = super().get_queryset()
+
+        if scraped_title:
+            queryset = queryset.filter(scraped_title__icontains=scraped_title)
+
+        return queryset
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                "scraped_title",
+                type=OpenApiTypes.STR,
+                description="Filter by scraped_title (ex. ?scraped_title=python)",
+            ),
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        """Get list of articles"""
+        return super().list(request, *args, **kwargs)
+
+    @extend_schema(
+        description="Retrieve a specific article",
+        responses={200: ArticleScrapedSerializer},
+    )
+    def retrieve(self, request, *args, **kwargs):
+        """Retrieve a specific article"""
+        return super().retrieve(request, *args, **kwargs)
