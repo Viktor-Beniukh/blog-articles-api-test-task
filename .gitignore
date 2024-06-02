@@ -429,3 +429,5 @@ $RECYCLE.BIN/
 /.env.prod
 /logs/
 /postgres-data/
+/*.csv
+*.csv
