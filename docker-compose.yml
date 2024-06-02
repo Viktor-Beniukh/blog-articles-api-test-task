@@ -18,6 +18,7 @@ services:
       - ./:/code
       - ./static:/code/static
       - ./media:/code/media
+      - shared-data:/code/shared-data
     command: >
       sh -c "python manage.py wait_for_db &&
              python manage.py migrate && 
@@ -46,6 +47,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    volumes:
+      - shared-data:/code/shared-data
     command: "celery -A blog_service worker -l INFO"
     depends_on:
       - web
@@ -59,6 +62,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    volumes:
+      - shared-data:/code/shared-data
     command: >
       sh -c "python manage.py wait_for_db &&
              celery -A blog_service beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler"
@@ -94,3 +99,6 @@ services:
     env_file:
       - .env.prod
     restart: on-failure
+
+volumes:
+  shared-data:

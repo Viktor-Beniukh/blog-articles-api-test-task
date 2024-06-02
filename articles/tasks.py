@@ -9,15 +9,18 @@ from articles.models import Article
 
 logger = logging.getLogger(__name__)
 
+SHARED_DATA_PATH = "/code/shared-data"
+
 
 @shared_task
 def scrape_articles_task():
-    execute(["scrapy", "crawl", "stories", "-O", "stories.csv"])
+    output_file = os.path.join(SHARED_DATA_PATH, "stories.csv")
+    execute(["scrapy", "crawl", "stories", "-O", output_file])
 
 
 @shared_task
 def import_articles_task():
-    file_path = os.path.join(os.getcwd(), "stories.csv")
+    file_path = os.path.join(SHARED_DATA_PATH, "stories.csv")
     try:
         with open(file_path, "r", encoding="utf-8") as file:
             reader = csv.DictReader(file)

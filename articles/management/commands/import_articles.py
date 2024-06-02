@@ -13,11 +13,12 @@ class Command(BaseCommand):
             with open(file_path, "r", encoding="utf-8") as file:
                 reader = csv.DictReader(file)
                 for row in reader:
-                    Article.objects.create(
-                        scraped_title=row["title"],
-                        scraped_url=row["url"],
-                        source="Scraped"
-                    )
+                    if not Article.objects.filter(scraped_url=row["url"]).exists():
+                        Article.objects.create(
+                            scraped_title=row["title"],
+                            scraped_url=row["url"],
+                            source="Scraped"
+                        )
             self.stdout.write(self.style.SUCCESS("Data imported successfully"))
         except FileNotFoundError:
             self.stdout.write(self.style.WARNING("File 'stories.csv' not found"))
