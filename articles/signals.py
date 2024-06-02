@@ -14,8 +14,12 @@ logger = logging.getLogger(__name__)
 @receiver(post_save, sender=Article)
 def send_new_article_notification(sender, instance, created, **kwargs):
     if created:
+        if instance.source == "Manual":
+            article_title = instance.title
+        else:
+            article_title = instance.scraped_title
+
         article_id = instance.id
-        article_title = instance.title
         bot_token = settings.BOT_TOKEN
         chat_id = settings.TELEGRAM_CHAT_ID
 
