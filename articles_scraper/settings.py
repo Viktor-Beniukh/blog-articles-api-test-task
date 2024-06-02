@@ -7,6 +7,16 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.abspath('.')))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "blog_service.settings")
+
+import django
+django.setup()
+
+
 BOT_NAME = "articles_scraper"
 
 SPIDER_MODULES = ["articles_scraper.spiders"]
