@@ -9,16 +9,18 @@ from articles.utils import articles_picture_file_path
 
 
 class Article(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, blank=True)
     content = models.TextField(blank=True)
     picture = models.ImageField(upload_to=articles_picture_file_path, null=True)
     published_at = models.DateField(auto_now_add=True)
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="articles"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True, related_name="articles"
     )
+    scraped_title = models.CharField(max_length=255, blank=True, null=True)
+    scraped_url = models.URLField(max_length=2000, blank=True, null=True)
 
     class Meta:
-        ordering = ["-published_at"]
+        ordering = ["-published_at", "-id"]
 
     def __str__(self):
         return self.title
