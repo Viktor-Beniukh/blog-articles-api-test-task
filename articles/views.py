@@ -19,7 +19,7 @@ from articles.serializers import (
 
 
 class ArticleViewSet(viewsets.ModelViewSet):
-    queryset = Article.objects.select_related("user")
+    queryset = Article.objects.select_related("user").filter(source="Manual")
     serializer_class = ArticleSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated, IsAuthorOrReadOnly)
