@@ -35,6 +35,6 @@ def send_new_article_notification(sender, instance, created, **kwargs):
 
 @receiver(pre_save, sender=Article)
 def prepend_base_url(sender, instance, **kwargs):
-    if not re.match(r"https?://", instance.scraped_url):
+    if instance.scraped_url and not re.match(r"https?://", instance.scraped_url):
         base_url = "https://news.ycombinator.com/"
         instance.scraped_url = base_url + instance.scraped_url
