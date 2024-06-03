@@ -1,7 +1,8 @@
 import logging
+import re
 
 from django.conf import settings
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
 from article_telegram_bot.tasks import send_new_article_notification_task
@@ -30,3 +31,10 @@ def send_new_article_notification(sender, instance, created, **kwargs):
             bot_token=bot_token,
             chat_id=int(chat_id)
         )
+
+
+@receiver(pre_save, sender=Article)
+def prepend_base_url(sender, instance, **kwargs):
+    if not re.match(r"https?://", instance.scraped_url):
+        base_url = "https://news.ycombinator.com/"
+        instance.scraped_url = base_url + instance.scraped_url
