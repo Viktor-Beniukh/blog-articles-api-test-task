@@ -62,6 +62,10 @@ with your according values (e.g. `.env.sample`):
 Optional: you can add a variable called `LOG_LEVEL` to `.env` and `.env.prod` files, if you want to change a level of logging
 
 
+# Warning! It's important!
+You need to add to core of the project chromedriver file for scraping! Driver version must match browser version!
+Here's the link to download it: `https://developer.chrome.com/docs/chromedriver/downloads`
+
 
 ## Run with docker
 
