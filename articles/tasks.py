@@ -18,9 +18,7 @@ def scrape_articles_task():
     execute(["scrapy", "crawl", "stories", "-O", output_file])
 
 
-@shared_task
-def import_articles_task():
-    file_path = os.path.join(SHARED_DATA_PATH, "stories.csv")
+def _import_articles(file_path):
     try:
         with open(file_path, "r", encoding="utf-8") as file:
             reader = csv.DictReader(file)
@@ -34,3 +32,9 @@ def import_articles_task():
         logger.info("Data imported successfully")
     except FileNotFoundError:
         logger.error("File 'stories.csv' not found")
+
+
+@shared_task
+def import_articles_task():
+    file_path = os.path.join(SHARED_DATA_PATH, "stories.csv")
+    _import_articles(file_path)
