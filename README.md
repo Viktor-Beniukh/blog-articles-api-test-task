@@ -7,6 +7,7 @@ API service for blog management with the ability to obtain articles from a site 
 
 - Python3 must be already installed
 - Install PostgreSQL and create db
+- Chromedriver must be already installed (or another driver for your browser)
 
 ```shell
 git clone https://github.com/Viktor-Beniukh/blog-articles-api-test-task.git
@@ -73,7 +74,8 @@ Docker should be installed
 
 - Create docker image: `docker-compose build`
 - Run docker app: `docker-compose up` or `docker-compose up -d` (to work in this terminal)
-- Create schedule for running sync in DB
+- Create schedule for running sync in DB (django-celery-beat is used to set the periodicity of tasks via admin panel.)
+
 
 
 ## Getting access
