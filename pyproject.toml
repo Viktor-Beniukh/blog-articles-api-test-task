@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "blog-articles-api-test-task"
+version = "0.1.0"
+description = ""
+authors = ["Viktor Beniukh <superbigbenjamin@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^5.0.6"
+python-dotenv = "^1.0.1"
+pillow = "^10.3.0"
+django-rest-framework = "^0.1.0"
+django-filter = "^24.2"
+django-debug-toolbar = "^4.4.2"
+drf-spectacular = "^0.27.2"
+psycopg2-binary = "^2.9.9"
+gunicorn = "^22.0.0"
+aiogram = "^3.6.0"
+celery = "^5.4.0"
+redis = "^5.0.4"
+django-celery-beat = "^2.6.0"
+python-telegram-bot = "^21.2"
+telebot = "^0.0.5"
+flower = "^2.0.1"
+scrapy = "^2.11.2"
+selenium = "^4.21.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+flake8 = "^7.0.0"
+flake8-variables-names = "^0.0.6"
+flake8-quotes = "^3.4.0"
+pep8-naming = "^0.14.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
